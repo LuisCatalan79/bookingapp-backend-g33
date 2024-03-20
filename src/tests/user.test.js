@@ -25,7 +25,7 @@ test('POST /users/login debe permitir logearse', async () => {
         email:"joel@gmail.com",
         password:"joel1234" 
     }
-    const res = request(app).post('/users/login').send(body);
+    const res = await request(app).post('/users/login').send(body);
     token = res.body.token;
     expect(res.status).toBe(200);
     expect(res.body.token).toBeDefined();
@@ -38,7 +38,7 @@ test('POST /users/login cuando usa credenciales invalidas', async () => {
         password:"joel1234" 
     }
    
-    const res = request(app).post('/users/login').send(body);
+    const res = await request(app).post('/users/login').send(body);
     expect(res.status).toBe(401);
 });
 
