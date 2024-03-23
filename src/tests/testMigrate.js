@@ -12,13 +12,13 @@ const main = async() => {
             lastName:'Test',
             email:'test@gmail.com',
             password:'test1234',
-            gender:'OTHER'
+            gender:'OTHERS'
         }
-        await request(app).post('/users').send(user);
-        // const userTest = await User.findOne({where: {email:'test@gmail.com'}});
-        // if (!userTest){
-        //     await request(app).post('/users').send(user);
-        // };
+        
+        const userTest = await User.findOne({where: {email:'test@gmail.com'}});
+        if (!userTest){
+            await request(app).post('/users').send(user);
+        };
 
         
         process.exit();

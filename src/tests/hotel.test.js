@@ -12,20 +12,23 @@ beforeAll(async()=>{
    token = res.body.token;
 });
 
-test('Get /cities debe retornar un status 200', async () => {
-    const res = await request(app).get('/cities');
+test('GET /hotels debe retornar un estatus 200', async () => {
+    const res = await request(app).get('/hotels');
     expect(res.status).toBe(200);
     expect(res.body).toBeInstanceOf(Array);
 });
 
-test('POST /cities debe crear una ciudad', async () => {
+test('POST /hotels debe crear un hotel', async () => {
     const body ={
-        name:'Bogota',
-        country:'Colombia',
-        countryId:'CO'
+        name:'hotel test',
+        description:'descripcion hotel test',
+        price:'50',
+        address:'direccion hotel test',
+        lat:'en alguna parte del mundo',
+        lon:'en alguna parte del mundo'
     }
     const res = await request(app)
-        .post('/cities')
+        .post('/hotels')
         .send(body)
         .set('Authorization', `Bearer ${token}`);
     id = res.body.id;
@@ -34,20 +37,27 @@ test('POST /cities debe crear una ciudad', async () => {
     expect(res.body.name).toBe(body.name);
 });
 
-test('PUT /cities/:id debe permitir actualizar una ciudad por su id', async () => {
+test('GET /hotels/:id debe permitir consultar un hotel por su id', async () => {
+    const res = await request(app).get(`/hotels/${id}`)
+       .set('Authorization', `Bearer ${token}`);
+    expect(res.status).toBe(200);
+});
+
+
+test('PUT /hotels/:id debe permitir actualizar un hotel por su id', async () => {
     const body ={
-        name:'Bogota D.C.'
+        name:'hotel test actualizado'
     };
-    const res = await request(app).put(`/cities/${id}`)
+    const res = await request(app).put(`/hotels/${id}`)
         .send(body)
         .set('Authorization', `Bearer ${token}`);
     expect(res.status).toBe(200);
     expect(res.body.name).toBe(body.name);
 });
 
-test('DELETE /cities/:id debe eliminar la ciudad por su id', async () => {
+test('DELETE /hotels/:id debe eliminar el hotel por su id', async () => {
     const res = await request(app)
-        .delete(`/cities/${id}`)
+        .delete(`/hotels/${id}`)
         .set('Authorization', `Bearer ${token}`);
     expect(res.status).toBe(204);
 });
