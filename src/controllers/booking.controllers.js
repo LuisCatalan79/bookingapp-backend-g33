@@ -1,16 +1,22 @@
 const catchError = require('../utils/catchError');
 const Booking = require('../models/Booking');
 const User = require('../models/User');
+const Hotel = require('../models/Hotel');
+const Image = require('../models/Image');
+const City = require('../models/City');
 
 const getAll = catchError(async(req, res) => {
-    const { userId } = req.user;
-    const where = {};
-    if (userId) where.userId = userId
+    const userId = req.user.id;
     const results = await Booking.findAll({
         include : [ {
             model : User,
             attributes:{exclude:['password']}
-        }], where
+        }, {
+            model: Hotel,
+            include: [Image, City],
+        }], where:{
+            userId:userId
+        }
     });
     return res.json(results);
 });
